@@ -1,17 +1,17 @@
 # Laravel POS System
 
-A basic Point-of-Sale application developed using Laravel and the MVC architecture.
+A basic Point-of-Sale application developed using Laravel, MySQL, and Eloquent ORM.
 
 ## Features
 
-- Home page
-- About page
-- Customer Accounts page with 5 sample records
-- User Accounts page with 5 sample records
-- Navigation between all four pages
-- Static PHP arrays for sample data
+- Home and About pages
+- Customer Accounts with 5 sample records
+- User Accounts with 5 sample records
+- MySQL database integration
+- Laravel migrations and database seeding
+- Eloquent models for customers and users
 - Blade templates using @foreach
-- Laravel routes and controllers
+- Navigation between all four pages
 
 ## Routes
 
@@ -20,39 +20,63 @@ A basic Point-of-Sale application developed using Laravel and the MVC architectu
 - `/customers` - Customer Accounts
 - `/users` - User Accounts
 
-## Technologies Used
+## Technologies
 
 - PHP
 - Laravel
+- MySQL
+- Eloquent ORM
 - Blade Templates
 - Composer
-- HTML
 
-## Project Structure
+## Database
 
-- `routes/web.php` - Application routes
-- `app/Http/Controllers/PageController.php` - Home and About pages
-- `app/Http/Controllers/CustomerController.php` - Customer records
-- `app/Http/Controllers/UserController.php` - User records
-- `resources/views/` - Blade templates
+Database name: `laravel_pos_system`
+
+Tables:
+- `customers`
+- `users`
+
+The database schema is defined through Laravel migrations, and sample records are inserted using `PosSeeder.php`.
 
 ## Installation
 
-1. Install PHP and Composer.
-2. Download or clone this repository.
-3. Open a terminal in the project folder.
-4. Run `composer install`.
-5. Copy `.env.example` to `.env`.
-6. Set `SESSION_DRIVER=file` in `.env`.
-7. Run `php artisan key:generate`.
-8. Run `php artisan serve`.
-9. Open `http://127.0.0.1:8000`.
+1. Clone or download the repository.
+2. Run `composer install`.
+3. Copy `.env.example` to `.env`.
+4. Configure the MySQL connection:
+
+   ```ini
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=laravel_pos_system
+   DB_USERNAME=root
+   DB_PASSWORD=
+   SESSION_DRIVER=file
+   ```
+
+5. Create the `laravel_pos_system` database in MySQL.
+6. Run `php artisan key:generate`.
+7. Run `php artisan migrate`.
+8. Run `php artisan db:seed --class=PosSeeder`.
+9. Run `php artisan serve`.
+10. Open `http://127.0.0.1:8000`.
+
+## Project Structure
+
+- `app/Models/Customer.php`
+- `app/Models/User.php`
+- `app/Http/Controllers/CustomerController.php`
+- `app/Http/Controllers/UserController.php`
+- `database/migrations/`
+- `database/seeders/PosSeeder.php`
+- `resources/views/`
+- `routes/web.php`
 
 ## Data Source
 
-This application uses static PHP arrays containing five customer records and five user records.
-
-No database connection is required for the account listings.
+Customer and user records are stored in MySQL and retrieved through Laravel Eloquent models instead of static PHP arrays.
 
 ## Developer
 
