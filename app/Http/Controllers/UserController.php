@@ -31,17 +31,25 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect('/users')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')
+            ->with('success', 'User created successfully.');
     }
 
-    public function edit($id)
+    public function show(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('users.show', compact('user'));
+    }
+
+    public function edit(string $id)
     {
         $user = User::findOrFail($id);
 
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
 
@@ -74,6 +82,21 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect('/users')->with('success', 'User updated successfully.');
+        return redirect()->route('users.index')
+            ->with('success', 'User updated successfully.');
+    }
+
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $user->delete();
+
+        return redirect()->route('users.index')
+            ->with('success', 'User deleted successfully.');
     }
 }

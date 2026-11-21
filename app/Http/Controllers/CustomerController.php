@@ -27,23 +27,27 @@ class CustomerController extends Controller
             'phone' => 'nullable|string|max:20'
         ]);
 
-        Customer::create([
-            'full_name' => $validated['full_name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? ''
-        ]);
+        Customer::create($validated);
 
-        return redirect('/customers')->with('success', 'Customer created successfully.');
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer created successfully.');
     }
 
-    public function edit($id)
+    public function show(string $id)
+    {
+        $customer = Customer::findOrFail($id);
+
+        return view('customers.show', compact('customer'));
+    }
+
+    public function edit(string $id)
     {
         $customer = Customer::findOrFail($id);
 
         return view('customers.edit', compact('customer'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $customer = Customer::findOrFail($id);
 
@@ -53,12 +57,18 @@ class CustomerController extends Controller
             'phone' => 'nullable|string|max:20'
         ]);
 
-        $customer->update([
-            'full_name' => $validated['full_name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? ''
-        ]);
+        $customer->update($validated);
 
-        return redirect('/customers')->with('success', 'Customer updated successfully.');
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer updated successfully.');
+    }
+
+    public function destroy(string $id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer deleted successfully.');
     }
 }
